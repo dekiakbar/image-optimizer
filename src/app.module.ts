@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from 'nest-router';
-import { OptimizerModule } from './optimizer/optimizer.module';
+import { OptimizeModule } from './optimize/optimize.module';
 import { routes } from './routes';
+import { ImagekitModule } from './imagekit/imagekit.module';
 
 @Module({
   imports: [
     RouterModule.forRoutes(routes),
-    OptimizerModule
+    OptimizeModule,
+    ImagekitModule
   ],
 })
 export class AppModule {}
