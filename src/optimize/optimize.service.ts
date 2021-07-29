@@ -1,38 +1,53 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import imagemin from 'imagemin';
 import imageminJpegtran from 'imagemin-jpegtran';
 import imageminPngquant from 'imagemin-pngquant';
-import { ImagekitLib } from 'src/imagekit/imagekit.provider';
-import { ImagekitService } from 'src/imagekit/imagekit.service';
+import ImageKit from 'imagekit';
+import { UploadResponse } from 'imagekit/dist/libs/interfaces';
 
 @Injectable()
 export class OptimizeService {
     constructor(
-        // @Inject(ImagekitLib) private imagekit
-        private ImagekitService: ImagekitService
+        private Imagekit: ImageKit
     ){}
     async optimizeImage(
         images: Array<Express.Multer.File>
     ){
-        const optimizedImages:Array<Express.Multer.File> = await Promise.all(
-            images.map( async (image): Promise<Express.Multer.File> => {
-                image.buffer = await imagemin.buffer(
-                    image.buffer,
-                    {
-                        plugins: [
-                            imageminJpegtran(),
-                            imageminPngquant({
-                                quality: [0.6, 0.8]
-                            })
-                        ]
-                    }
-                );
-                
-                return image;
+        const optimizedImages:Array<UploadResponse> = await Promise.all(
+            images.map( async (image): Promise<UploadResponse> => {
+                image = await this.compressImage(image);
+                return this.uploadImage(image);
             }
         ));
-        
-        this.ImagekitService.uploadImage(images[0]);
-        return images[0].originalname;
+
+        return optimizedImages;
+    }
+
+    async uploadImage(
+        image: Express.Multer.File
+    ): Promise<UploadResponse>{
+        const response = await this.Imagekit.upload({
+            file : image.buffer,
+            fileName : image.originalname,
+        });
+
+        return response;
+    }
+
+    async compressImage(
+        image: Express.Multer.File
+    ): Promise<Express.Multer.File>{
+        const buffer = await imagemin.buffer(
+            image.buffer,
+            {
+                plugins: [
+                    imageminJpegtran({ quality: 50 }),
+                    imageminPngquant({ quality: [0.6, 0.8] })
+                ]
+            }
+        );
+        image.buffer = buffer;
+
+        return image;
     }
 }

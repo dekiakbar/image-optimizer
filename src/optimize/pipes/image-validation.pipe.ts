@@ -1,4 +1,4 @@
-import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class ImageValidationPipe implements PipeTransform {
@@ -14,6 +14,6 @@ export class ImageValidationPipe implements PipeTransform {
     }
 
     private isImageValid(image: any){
-        return image.originalname.match(/\.(jpg|jpeg|png|gif)$/);
+        return image.originalname.match(/\.(jpg|jpeg|png)$/);
     }
 }

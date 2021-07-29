@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ImagekitModule } from 'src/imagekit/imagekit.module';
 import { OptimizeController } from './optimize.controller';
 import { OptimizeService } from './optimize.service';
+import { ImagekitProvider } from './imagekit.provider';
 
 @Module({
-    imports:[
-        ImagekitModule
-    ],
     controllers: [OptimizeController],
-    providers: [OptimizeService]
+    providers: [
+        OptimizeService,
+        ImagekitProvider
+    ]
 })
 export class OptimizeModule {}

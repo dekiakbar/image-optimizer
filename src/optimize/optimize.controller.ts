@@ -2,7 +2,6 @@ import { Controller, Post, Res, UploadedFiles, UseInterceptors, UsePipes } from 
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageValidationPipe } from './pipes/image-validation.pipe';
 import { OptimizeService } from './optimize.service';
-import { Response } from 'express';
 
 @Controller('optimize')
 export class OptimizeController {
