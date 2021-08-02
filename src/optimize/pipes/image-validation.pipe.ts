@@ -1,16 +1,35 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { isNumber } from 'lodash';
 
 @Injectable()
 export class ImageValidationPipe implements PipeTransform {
-    transform(values: any) {
-        values.forEach(
-            image => {
-                if(!this.isImageValid(image)) {
-                    throw new BadRequestException(`image with name : "${image.originalname}" has an invalid extension`);
+    transform(value: any, metadata: ArgumentMetadata) {
+        if( metadata.type === 'body' ){
+            if(typeof value === 'object' && 'quality' in value && value.quality ){
+                if( !isNaN(parseFloat(value.quality)) ){
+                    if( value.quality > 100 || value.quality <= 0 ){
+                        throw new BadRequestException(`quality must >= 0 and <= 100`);
+                    }
+                }else{
+                    throw new BadRequestException(`quality must a number`);
                 }
+            }else{
+                throw new BadRequestException(`quality field is empty`);
             }
-        );
-        return values;
+        }else if( metadata.type === 'custom' ){
+            if(value !== undefined && Array.isArray(value) && value.length ){
+                value.forEach(
+                    image => {
+                        if(!this.isImageValid(image)) {
+                            throw new BadRequestException(`image with name : "${image.originalname}" has an invalid extension`);
+                        }
+                    }
+                );
+            }else{
+                throw new BadRequestException(`image field is empty`);
+            }
+        }
+        return value;
     }
 
     private isImageValid(image: any){

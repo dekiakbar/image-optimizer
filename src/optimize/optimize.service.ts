@@ -40,8 +40,10 @@ export class OptimizeService {
         const buffer = await imagemin.buffer(
             image.buffer,
             {
-                plugins: [
-                    imageminJpegtran({ quality: 50 }),
+                use: [
+                    imageminJpegtran({
+                        progressive: true
+                    }),
                     imageminPngquant({ quality: [0.6, 0.8] })
                 ]
             }

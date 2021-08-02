@@ -24,6 +24,8 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/platform-express": "^7.6.15",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "imagekit": "^3.2.0",
     "imagemin": "^7.0.1",
     "imagemin-jpegtran": "^7.0.0",
