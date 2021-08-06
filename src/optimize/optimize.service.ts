@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import imagemin from 'imagemin';
-import imageminJpegtran from 'imagemin-jpegtran';
-import imageminPngquant from 'imagemin-pngquant';
+import sharp from 'sharp';
 import ImageKit from 'imagekit';
 import { UploadResponse } from 'imagekit/dist/libs/interfaces';
+import { exit } from 'process';
 
 @Injectable()
 export class OptimizeService {
@@ -11,11 +10,12 @@ export class OptimizeService {
         private Imagekit: ImageKit
     ){}
     async optimizeImage(
-        images: Array<Express.Multer.File>
+        images: Array<Express.Multer.File>,
+        quality: number
     ){
         const optimizedImages:Array<UploadResponse> = await Promise.all(
             images.map( async (image): Promise<UploadResponse> => {
-                image = await this.compressImage(image);
+                image = await this.compressImage(image, quality);
                 return this.uploadImage(image);
             }
         ));
@@ -35,21 +35,48 @@ export class OptimizeService {
     }
 
     async compressImage(
-        image: Express.Multer.File
+        image: Express.Multer.File,
+        quality: number
     ): Promise<Express.Multer.File>{
-        const buffer = await imagemin.buffer(
-            image.buffer,
-            {
-                use: [
-                    imageminJpegtran({
-                        progressive: true
-                    }),
-                    imageminPngquant({ quality: [0.6, 0.8] })
-                ]
-            }
-        );
-        image.buffer = buffer;
+        if(image.originalname.match(/\.(png)$/)){
+            image = await this.compressPng(image, quality);
+        }else if(image.originalname.match(/\.(jpg|jpeg)$/)){
+            image = await this.compressJpeg(image, quality);
+        }
+        
+        return image;
+    }
 
+    async compressPng(
+        image: Express.Multer.File,
+        quality: number
+    ): Promise<Express.Multer.File>{
+        const buffer = await sharp(image.buffer)
+            .png({
+                progressive: true,
+                compressionLevel: 8,
+                quality: quality
+            })
+            .toBuffer();
+
+        image.buffer = buffer;
+        
+        return image;
+    }
+
+    async compressJpeg(
+        image: Express.Multer.File,
+        quality: number
+    ): Promise<Express.Multer.File>{
+        const buffer = await sharp(image.buffer)
+            .jpeg({
+                progressive: true,
+                quality: quality
+            })
+            .toBuffer();
+
+        image.buffer = buffer;
+        
         return image;
     }
 }

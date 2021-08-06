@@ -21,8 +21,8 @@ export class OptimizeController {
     )
     async optimizeImage(
         @UploadedFiles() images: Array<Express.Multer.File>,
-        @Body() OptimizeImageDto
+        @Body() OptimizeImage
     ){
-        return this.OptimizeService.optimizeImage(images);
+        return this.OptimizeService.optimizeImage(images, parseInt(OptimizeImage.quality));
     }
 }
