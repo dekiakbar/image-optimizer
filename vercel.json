@@ -1,9 +1,12 @@
 { 
   "version": 2, 
   "builds": [
-    { "src": "dist/main.js", "use": "@now/node" }
+    	{ "src": "dist/main.js", "use": "@now/node" }
    ],
   "routes": [
-    { "src": "/(.*)", "dest": "dist/main.js" }
+    	{ "src": "/(.*)", "dest": "dist/main.js" }
+   ],
+   "rewrites": [
+	{ "source": "/api/(.*)", "destination": "/api" }
    ]
 }
