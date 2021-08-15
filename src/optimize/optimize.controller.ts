@@ -23,6 +23,7 @@ export class OptimizeController {
         @UploadedFiles() images: Array<Express.Multer.File>,
         @Body() OptimizeImage
     ){
-        return this.OptimizeService.optimizeImage(images, parseInt(OptimizeImage.quality));
+        const res = await this.OptimizeService.optimizeImage(images, parseInt(OptimizeImage.quality));
+        return res;
     }
 }

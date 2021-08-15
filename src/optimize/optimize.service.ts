@@ -2,19 +2,23 @@ import { Injectable } from '@nestjs/common';
 import sharp from 'sharp';
 import ImageKit from 'imagekit';
 import { UploadResponse } from 'imagekit/dist/libs/interfaces';
-import { exit } from 'process';
+import { ResponseDto } from './dto/response.dto';
+import { response } from 'express';
 
 @Injectable()
 export class OptimizeService {
     constructor(
-        private Imagekit: ImageKit
+        private Imagekit: ImageKit,
     ){}
+
+    private response;
+
     async optimizeImage(
         images: Array<Express.Multer.File>,
         quality: number
     ){
-        const optimizedImages:Array<UploadResponse> = await Promise.all(
-            images.map( async (image): Promise<UploadResponse> => {
+        const optimizedImages:Array<ResponseDto> = await Promise.all(
+            images.map( async (image): Promise<ResponseDto> => {
                 image = await this.compressImage(image, quality);
                 return this.uploadImage(image);
             }
@@ -25,13 +29,18 @@ export class OptimizeService {
 
     async uploadImage(
         image: Express.Multer.File
-    ): Promise<UploadResponse>{
-        const response = await this.Imagekit.upload({
-            file : image.buffer,
-            fileName : image.originalname,
+    ): Promise<ResponseDto>{
+        const responseApi = await this.Imagekit.upload({
+            file: image.buffer,
+            fileName: image.originalname,
+            isPrivateFile: false
         });
 
-        return response;
+        this.response = responseApi;
+        this.response.oldSize = image.size;
+        this.response.optimizePercentage = this.calculateSizePercentage(this.response.oldSize, this.response.size).toFixed(2);
+
+        return this.response;
     }
 
     async compressImage(
@@ -71,12 +80,22 @@ export class OptimizeService {
         const buffer = await sharp(image.buffer)
             .jpeg({
                 progressive: true,
-                quality: quality
+                quality: quality >= 90 ? 90 : quality,
+                optimiseScans: true,
+                optimizeScans: true,
+                mozjpeg: true
             })
             .toBuffer();
 
         image.buffer = buffer;
         
         return image;
+    }
+
+    calculateSizePercentage(
+        oldSize: number,
+        newSize: number
+    ): Number{
+        return 100 - (newSize/oldSize * 100);
     }
 }
