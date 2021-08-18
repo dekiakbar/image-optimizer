@@ -1,8 +1,11 @@
 import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
-import { isNumber } from 'lodash';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ImageValidationPipe implements PipeTransform {
+    constructor(
+        private configService: ConfigService
+    ){}
     transform(value: any, metadata: ArgumentMetadata) {
         if( metadata.type === 'body' ){
             if(typeof value === 'object' && 'quality' in value && value.quality ){
@@ -33,6 +36,9 @@ export class ImageValidationPipe implements PipeTransform {
     }
 
     private isImageValid(image: any){
-        return image.originalname.match(/\.(jpg|jpeg|png)$/);
+        const allowedFileTypes = this.configService.get('ALLOWED_FILE_TYPE').split('.').join('').split(' ').join('|');
+        const regex = new RegExp("\.("+allowedFileTypes+")$");
+
+        return image.originalname.match(regex);
     }
 }

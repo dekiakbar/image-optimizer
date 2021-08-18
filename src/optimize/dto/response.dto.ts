@@ -1,4 +1,3 @@
-
 export class ResponseDto{
     fileId: string;
     name: string;

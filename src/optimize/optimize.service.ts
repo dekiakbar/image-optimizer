@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import sharp from 'sharp';
 import ImageKit from 'imagekit';
-import { UploadResponse } from 'imagekit/dist/libs/interfaces';
 import { ResponseDto } from './dto/response.dto';
-import { response } from 'express';
 
 @Injectable()
 export class OptimizeService {

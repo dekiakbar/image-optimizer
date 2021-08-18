@@ -12,12 +12,7 @@ export class OptimizeController {
     @Post('/')
     @UsePipes(ImageValidationPipe)
     @UseInterceptors(
-        FilesInterceptor(
-            'images',5,
-            {
-                limits:{ fileSize: 8 * 1024 * 1024 },
-            }
-        ),
+        FilesInterceptor('images')
     )
     async optimizeImage(
         @UploadedFiles() images: Array<Express.Multer.File>,
