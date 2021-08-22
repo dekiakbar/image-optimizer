@@ -4,7 +4,7 @@
   "description": "",
   "author": "Deki Akbar",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
