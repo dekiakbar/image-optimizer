@@ -2,6 +2,7 @@ import { Body, Controller, Post, UploadedFiles, UseInterceptors, UsePipes } from
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageValidationPipe } from './pipes/image-validation.pipe';
 import { OptimizeService } from './optimize.service';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('optimize')
 export class OptimizeController {
@@ -10,6 +11,19 @@ export class OptimizeController {
     ){}
     
     @Post('/')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                quality: { type: 'integer' },
+                images: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
     @UsePipes(ImageValidationPipe)
     @UseInterceptors(
         FilesInterceptor('images')
