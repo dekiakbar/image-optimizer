@@ -1,6 +1,6 @@
 {
   "name": "image-optimizer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "Deki Akbar",
   "private": true,
@@ -21,10 +21,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^7.6.15",
+    "@nestjs/common": "^8.0.6",
     "@nestjs/config": "^1.0.1",
-    "@nestjs/core": "^7.6.15",
-    "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/core": "^8.0.6",
+    "@nestjs/platform-express": "^8.0.6",
+    "@nestjs/swagger": "^5.0.9",
     "@types/sharp": "^0.28.5",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
@@ -32,8 +33,9 @@
     "nest-router": "^1.0.9",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6",
-    "sharp": "^0.28.3"
+    "rxjs": "^7.3.0",
+    "sharp": "^0.28.3",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
