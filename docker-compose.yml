@@ -1,7 +1,9 @@
 version: "3"
 services:
   node:
-    build: .
+    image: node:gallium-slim
+    user: node
+    working_dir: /app
     volumes:
       - '.:/app'
     ports:
