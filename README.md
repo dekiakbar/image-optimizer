@@ -6,87 +6,81 @@ Image Optimizer Backend is a application for [image optimizer frontend](https://
 
 ### Backend (this repo)
 - #### Without docker
-    - ```bash
-    # Clone this repository
-    git clone https://github.com/dekiakbar/image-optimizer
-    ```
 
     - ```bash
-    # Navigate to project dir
-    cd image-optimizer
-    ```
+        # Clone this repository
+        git clone https://github.com/dekiakbar/image-optimizer
+        ```
 
     - ```bash
-    # Install node modules and dependencies
-    npm install
+        # Navigate to project dir
+        cd image-optimizer
+        ```
+
+    - ```bash
+        # Install node modules and dependencies
+        npm install
+            ```
+    
+    - ```bash
+        # Run app
+
+        # development
+        $ npm run start
+
+        #  Watch mode
+        $ npm run start:dev
+
+        # production mode
+        $ npm run start:prod
+        ```
+
+    - ```bash
+        # access swager api
+        http://localhost:3000
+        ```
+    
+- #### Docker
+    - ```bash
+        # Clone this repository
+        git clone https://github.com/dekiakbar/image-optimizer
+        ```
+
+    - ```bash
+        # Navigate to project dir
+        cd image-optimizer
         ```
     
     - ```bash
-    # Run app
-    
-    # development
-    $ npm run start
-        
-    #  Watch mode
-    $ npm run start:dev
-    
-    # production mode
-    $ npm run start:prod
-    ```
+        # Build image and start container
+        docker-compose up -d
+        ```
 
     - ```bash
-    # access swager api
-    http://localhost:3000
-    ```
-    
-- #### Docker
-    - ```bash
-    # Clone this repository
-    git clone https://github.com/dekiakbar/image-optimizer
-    ```
-
-    - ```bash
-    # Navigate to project dir
-    cd image-optimizer
-    ```
-
-    - ```bash
-    # Build image and start container
-    docker-compose run --rm node npm install --legacy-peer-deps
-    ```
-    
-    - ```bash
-    # Build image and start container
-    docker-compose up -d
-    ```
-
-    - ```bash
-    # access swager api
-    http://localhost:3000
-    ```
-
+        # access swager api
+        http://localhost:3000
+        ```
+    -  #### NOTE : if you wanna run npm command, please use this.
+        ```bash
+        docker-compose run --rm node npm install --legacy-peer-deps
+        ```
 ## Deployment
 - #### Docker
     - ```bash
-    # Clone this repository
-    git clone https://github.com/dekiakbar/image-optimizer
-    ```
+        # Clone this repository
+        git clone https://github.com/dekiakbar/image-optimizer
+        ```
 
     - ```bash
-    # Navigate to project dir
-    cd image-optimizer
-    ```
-    
+        # Navigate to project dir
+        cd image-optimizer
+        ```
+        
     - ```bash
-    # Build image and start container
-    docker-compose run --rm node npm install --legacy-peer-deps
-    ```
-
-    - ```bash
-    # Build image and start container
-    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-    ```
-
+        # Build image and start container
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+        ```
+        
 ## Environment Variable
 
 Copy `env.example` to `.env`
