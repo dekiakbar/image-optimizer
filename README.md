@@ -1,37 +1,91 @@
 # Image Optimizer Backend
 
-Image Optimizer Backend is a application for [image optimizer frontend](https://github.com/dekiakbar/image-optimizer-fe). Build by [Nest Js](https://nestjs.com/)
+Image Optimizer Backend is a application for [image optimizer frontend](https://github.com/dekiakbar/image-optimizer-fe). Build with [Nest Js](https://nestjs.com/)
 
 ## Installation
 
-this project created use the following tool
-> node version : v16.6.1
-
-> npm version : 7.20.5
-
 ### Backend (this repo)
+- #### Without docker
+    - ```bash
+    # Clone this repository
+    git clone https://github.com/dekiakbar/image-optimizer
+    ```
 
-Clone this repository
+    - ```bash
+    # Navigate to project dir
+    cd image-optimizer
+    ```
 
-```bash
-git clone https://github.com/dekiakbar/image-optimizer
-```
+    - ```bash
+    # Install node modules and dependencies
+    npm install
+        ```
+    
+    - ```bash
+    # Run app
+    
+    # development
+    $ npm run start
+        
+    #  Watch mode
+    $ npm run start:dev
+    
+    # production mode
+    $ npm run start:prod
+    ```
 
-Navigate to project dir
+    - ```bash
+    # access swager api
+    http://localhost:3000
+    ```
+    
+- #### Docker
+    - ```bash
+    # Clone this repository
+    git clone https://github.com/dekiakbar/image-optimizer
+    ```
 
-```bash
-cd image-optimizer
-```
+    - ```bash
+    # Navigate to project dir
+    cd image-optimizer
+    ```
 
-Install node modules and dependencies
+    - ```bash
+    # Build image and start container
+    docker-compose run --rm node npm install --legacy-peer-deps
+    ```
+    
+    - ```bash
+    # Build image and start container
+    docker-compose up -d
+    ```
 
-```bash
-npm install
-```
+    - ```bash
+    # access swager api
+    http://localhost:3000
+    ```
 
-### Frontend Clone this repository
+## Deployment
+- #### Docker
+    - ```bash
+    # Clone this repository
+    git clone https://github.com/dekiakbar/image-optimizer
+    ```
 
-You must install [image optimizer Frontend](https://github.com/dekiakbar/image-optimizer-fe).
+    - ```bash
+    # Navigate to project dir
+    cd image-optimizer
+    ```
+    
+    - ```bash
+    # Build image and start container
+    docker-compose run --rm node npm install --legacy-peer-deps
+    ```
+
+    - ```bash
+    # Build image and start container
+    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    ```
 
 ## Environment Variable
 
@@ -57,18 +111,8 @@ MAX_FILE_UPLOAD=5
 MAX_UPLOAD_SIZE=8192
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
+## Frontend Clone this repository
+You must install [image optimizer Frontend](https://github.com/dekiakbar/image-optimizer-fe).
 
 ## License
 [MIT](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt)
