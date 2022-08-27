@@ -1,4 +1,4 @@
 version: "3"
 services:
   node:
-    command: "npm run start:prod"
+    command: bash -c "npm run build && npm run start:prod"

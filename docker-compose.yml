@@ -6,4 +6,4 @@ services:
       - '.:/app'
     ports:
       - "${PORT}:${PORT}"
-    command: "npm run start:dev"
+    command: bash -c "npm run start:dev"
