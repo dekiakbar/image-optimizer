@@ -8,8 +8,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Image Optimizer')
-    .setDescription('Documentation API for Image Optimization')
-    .setVersion('0.0.2')
+    .setDescription('REST API documentation')
+    .setVersion('0.0.3')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/', app, document);
