@@ -4,6 +4,6 @@ import { ConfigApiService } from './config-api.service';
 
 @Module({
   controllers: [ConfigApiController],
-  providers: [ConfigApiService]
+  providers: [ConfigApiService],
 })
 export class ConfigApiModule {}
