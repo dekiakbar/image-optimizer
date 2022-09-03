@@ -1,5 +1,5 @@
-export class GetConfigDto{
-    maxFileUpload: number;
-    maxUploadSize: number;
-    allowedFileTypes: Array<string>;
+export class GetConfigDto {
+  maxFileUpload: number;
+  maxUploadSize: number;
+  allowedFileTypes: Array<string>;
 }
