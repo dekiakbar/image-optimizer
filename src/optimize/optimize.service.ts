@@ -17,10 +17,6 @@ export class OptimizeService {
     return optimizedImages;
   }
 
-  // async uploadImage(image: Express.Multer.File): Promise<UploadResponseDto> {
-  //   return this.storageService.upload(image);
-  // }
-
   async compressImage(
     image: Express.Multer.File,
     quality: number,

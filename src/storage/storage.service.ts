@@ -10,7 +10,7 @@ export class StorageService {
   private uploadResonse: UploadResponseDto;
   private sizeBefore: number;
   private sizeAfter: number;
-  
+
   constructor(
     private s3: S3,
     private configService: ConfigService,
@@ -62,9 +62,7 @@ export class StorageService {
    * @param image
    * @returns
    */
-  async upload(
-    image: Express.Multer.File
-  ): Promise<UploadResponseDto> {
+  async upload(image: Express.Multer.File): Promise<UploadResponseDto> {
     this.sizeAfter = image.buffer.byteLength;
     this.sizeBefore = image.size;
 
