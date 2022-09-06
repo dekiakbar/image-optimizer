@@ -13,8 +13,6 @@ jobs:
           node-version: lts/gallium
       - name: npm install
         run: npm install
-      - name: copy .env file
-        run: cp .env.example .env
       - name: unit tests
         run: npm run test
       - name: generate codecov report
@@ -33,7 +31,5 @@ jobs:
           node-version: lts/gallium
       - name: npm install
         run: npm install
-      - name: copy .env file
-        run: cp .env.example .env
       - name: end to end test
         run: npm run test:e2e
