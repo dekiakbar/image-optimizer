@@ -1,0 +1,39 @@
+name: test
+
+on: [push]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install node lts (gallium)
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/gallium
+      - name: npm install
+        run: npm install
+      - name: copy .env file
+        run: cp .env.example .env
+      - name: unit tests
+        run: npm run test
+      - name: generate codecov report
+        run: npm run test:cov
+      - name: upload report to codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install node lts (gallium)
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/gallium
+      - name: npm install
+        run: npm install
+      - name: copy .env file
+        run: cp .env.example .env
+      - name: end to end test
+        run: npm run test:e2e
