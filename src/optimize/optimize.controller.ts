@@ -10,6 +10,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageValidationPipe } from './pipes/image-validation.pipe';
 import { OptimizeService } from './optimize.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { UploadResponseDto } from 'src/storage/dto/upload-response.dto';
 
 @Controller('optimize')
 export class OptimizeController {
@@ -34,7 +35,7 @@ export class OptimizeController {
   async optimizeImage(
     @UploadedFiles() images: Array<Express.Multer.File>,
     @Body() OptimizeImage,
-  ) {
+  ): Promise<UploadResponseDto[]> {
     const res = await this.optimizeService.optimizeImage(
       images,
       parseInt(OptimizeImage.quality),

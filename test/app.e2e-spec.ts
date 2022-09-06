@@ -15,9 +15,23 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/api/v1/config')
-      .expect(200)
+  describe('Config API api/v1/config', () => {
+    it('should return OK (200)', () => {
+      return request(app.getHttpServer()).get('/api/v1/config').expect(200);
+    });
+
+    it('should return Not Found (404)', () => {
+      return request(app.getHttpServer()).post('/api/v1/config').expect(404);
+    });
+  });
+
+  describe('Optimize API api/v1/optimize', () => {
+    it('should return Not Found (404)', () => {
+      return request(app.getHttpServer()).get('/api/v1/optimize').expect(404);
+    });
+
+    it('should return Bad Request (400)', () => {
+      return request(app.getHttpServer()).post('/api/v1/optimize').expect(400);
+    });
   });
 });

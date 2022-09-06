@@ -6,7 +6,10 @@ import { UploadResponseDto } from 'src/storage/dto/upload-response.dto';
 export class OptimizeService {
   constructor(private storageService: StorageService) {}
 
-  async optimizeImage(images: Array<Express.Multer.File>, quality: number) {
+  async optimizeImage(
+    images: Array<Express.Multer.File>,
+    quality: number,
+  ): Promise<UploadResponseDto[]> {
     const optimizedImages: Array<UploadResponseDto> = await Promise.all(
       images.map(async (image): Promise<UploadResponseDto> => {
         image = await this.compressImage(image, quality);
@@ -16,10 +19,6 @@ export class OptimizeService {
 
     return optimizedImages;
   }
-
-  // async uploadImage(image: Express.Multer.File): Promise<UploadResponseDto> {
-  //   return this.storageService.upload(image);
-  // }
 
   async compressImage(
     image: Express.Multer.File,
