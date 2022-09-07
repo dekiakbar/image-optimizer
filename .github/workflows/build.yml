@@ -1,10 +1,10 @@
-name: Test
+name: Build
 
 on: [push]
 
 jobs:
-  unit:
-    name: Unit Test
+  prebuild:
+    name: Run Prebuild
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,16 +14,10 @@ jobs:
           node-version: lts/gallium
       - name: npm install
         run: npm install
-      - name: unit tests
-        run: npm run test
-      - name: generate codecov report
-        run: npm run test:cov
-      - name: upload report to codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-  e2e:
-    name: End to end Test
+      - name: run prebuild
+        run: npm run prebuild
+  build:
+    name: Run Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,5 +27,5 @@ jobs:
           node-version: lts/gallium
       - name: npm install
         run: npm install
-      - name: end to end test
-        run: npm run test:e2e
+      - name: run build
+        run: npm run build
