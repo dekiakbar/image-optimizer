@@ -11,7 +11,7 @@ describe('ConfigApiService', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
-          envFilePath: ['.env.local'],
+          envFilePath: ['.env.example'],
         }),
         ConfigApiModule,
       ],

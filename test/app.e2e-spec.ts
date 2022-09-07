@@ -14,9 +14,9 @@ describe('AppController (e2e)', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
-          envFilePath: ['.env.local'],
+          envFilePath: ['.env.example'],
         }),
-        AppModule
+        AppModule,
       ],
       providers: [
         {

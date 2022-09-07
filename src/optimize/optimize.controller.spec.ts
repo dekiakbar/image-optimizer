@@ -14,7 +14,7 @@ describe('OptimizeController', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
-          envFilePath: ['.env.local'],
+          envFilePath: ['.env.example'],
         }),
         StorageModule,
       ],
