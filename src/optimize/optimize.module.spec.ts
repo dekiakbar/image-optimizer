@@ -1,4 +1,4 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { StorageModule } from '../storage/storage.module';
 import { OptimizeModule } from './optimize.module';
@@ -11,11 +11,11 @@ describe('OptimizeModule', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
+          envFilePath: ['.env.local'],
         }),
         OptimizeModule,
         StorageModule,
       ],
-      providers: [ConfigService],
     }).compile();
 
     optimizeModule = module.get<OptimizeModule>(OptimizeModule);
