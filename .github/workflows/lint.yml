@@ -1,6 +1,10 @@
 name: Lint
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - completed
 
 jobs:
   lint:
