@@ -1,6 +1,34 @@
 # Image Optimizer Backend
 
-Image Optimizer Backend is a application for [image optimizer frontend](https://github.com/dekiakbar/image-optimizer-fe). Build with [Nest Js](https://nestjs.com/)
+<p align="center">
+    <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/build.yml">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/build.yml/badge.svg?event=push" alt="Build">
+    </a>
+    <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/deploy.yml">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/deploy.yml/badge.svg" alt="Deploy">
+    </a>
+    <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/lint.yml">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/lint.yml/badge.svg?event=push" alt="Lint">
+    </a>
+    <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/test.yml">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/test.yml/badge.svg?event=push" alt="Build">
+    </a>
+    <a href="https://codecov.io/gh/dekiakbar/image-optimizer" > 
+        <img src="https://codecov.io/gh/dekiakbar/image-optimizer/branch/master/graph/badge.svg?token=E8PNY7GOVW"/> 
+    </a>
+<p>
+
+---
+
+## Table of Contents
+
+- [Installation](#installation)
+    - [Without docker](#without-docker)
+    - [Docker](#docker)
+- [Deployment](#deployment)
+- [Environment Variable](#environment-variable)
+- [Frontend](#frontend)
+- [License](#license)
 
 ## Installation
 
@@ -37,7 +65,7 @@ Image Optimizer Backend is a application for [image optimizer frontend](https://
 
     - ```bash
         # access swager api
-        http://localhost:3000
+        http://localhost:<port>/api
         ```
     
 - #### Docker
@@ -57,8 +85,8 @@ Image Optimizer Backend is a application for [image optimizer frontend](https://
         ```
 
     - ```bash
-        # access swager api
-        http://localhost:3000
+        # access swagger api
+        http://localhost:3000/api
         ```
     -  #### NOTE : if you wanna run npm command, please use this.
         ```bash
@@ -94,6 +122,20 @@ Fill the required `env` variables:
 ```bash
 PORT=3000
 
+# Storage type for save image
+# valid :
+# - S3
+# - imagekit
+STORAGE_TYPE=S3
+
+# if use S3 as storage
+S3_BUCKET_NAME=
+S3_REGION=global
+S3_ENDPOINT=
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+
+# if use imagekit as storage
 IMAGEKIT_PUBLIC_KEY=<YOUR_IMAGEKIT_PUBLIC_KEY>
 IMAGEKIT_PRIVATE_KEY=<YOUR_IMAGEKIT_PRIVATE_KEY>
 URL_ENDPOINT=<YOUR_IMAGEKIT_ENDPOINT>
@@ -105,8 +147,8 @@ MAX_FILE_UPLOAD=5
 MAX_UPLOAD_SIZE=8192
 ```
 
-## Frontend Clone this repository
+## Frontend
 You must install [image optimizer Frontend](https://github.com/dekiakbar/image-optimizer-fe).
 
 ## License
-[MIT](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt)
+[MIT](https://github.com/dekiakbar/image-optimizer/blob/master/LICENSE)
