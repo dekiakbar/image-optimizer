@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Post,
@@ -9,8 +10,8 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageValidationPipe } from './pipes/image-validation.pipe';
 import { OptimizeService } from './optimize.service';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { UploadResponseDto } from 'src/storage/dto/upload-response.dto';
+import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { UploadResponseDto } from '../storage/dto/upload-response.dto';
 
 @Controller('optimize')
 export class OptimizeController {
@@ -27,6 +28,18 @@ export class OptimizeController {
           type: 'string',
           format: 'binary',
         },
+      },
+    },
+  })
+  @ApiTags('optimize')
+  @ApiBadRequestResponse({
+    status: 400,
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer' },
+        message: { type: 'string' },
+        error: { type: 'string' },
       },
     },
   })
