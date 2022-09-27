@@ -3,18 +3,28 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { StorageService } from './../src/storage/storage.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let storageService: StorageService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
           envFilePath: ['.env.example'],
+        }),
+        ThrottlerModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (config: ConfigService) => ({
+            ttl: config.get('THROTTLE_TTL'),
+            limit: config.get('THROTTLE_LIMIT'),
+          }),
         }),
         AppModule,
       ],
@@ -28,6 +38,10 @@ describe('AppController (e2e)', () => {
               uploadImagekit: jest.fn(),
             };
           },
+        },
+        {
+          provide: APP_GUARD,
+          useClass: ThrottlerGuard,
         },
       ],
     }).compile();
@@ -95,5 +109,16 @@ describe('AppController (e2e)', () => {
           .expect(201);
       });
     });
+  });
+
+  /**
+   * close app when test is finished.
+   * prevent warning :
+   *
+   * This usually means that there are asynchronous operations that weren't stopped in your tests.
+   * Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
+   */
+  afterAll(() => {
+    app.close();
   });
 });

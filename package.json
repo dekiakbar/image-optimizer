@@ -26,6 +26,7 @@
     "@nestjs/core": "^9.0.11",
     "@nestjs/platform-express": "^9.0.11",
     "@nestjs/swagger": "^6.1.0",
+    "@nestjs/throttler": "^3.0.0",
     "@types/aws-sdk": "^2.7.0",
     "@types/sharp": "^0.28.5",
     "aws-sdk": "^2.1207.0",
