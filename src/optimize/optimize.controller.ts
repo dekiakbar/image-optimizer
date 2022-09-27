@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Post,
@@ -10,7 +9,12 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageValidationPipe } from './pipes/image-validation.pipe';
 import { OptimizeService } from './optimize.service';
-import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConsumes,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UploadResponseDto } from '../storage/dto/upload-response.dto';
 
 @Controller('optimize')

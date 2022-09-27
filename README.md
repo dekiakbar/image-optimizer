@@ -48,7 +48,7 @@
     - ```bash
         # Install node modules and dependencies
         npm install
-            ```
+        ```
     
     - ```bash
         # Run app

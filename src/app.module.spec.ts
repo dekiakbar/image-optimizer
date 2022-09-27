@@ -1,8 +1,10 @@
 import { INestApplication } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from './app.module';
 import request from 'supertest';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 describe('App Module', () => {
   let app: INestApplication;
@@ -14,7 +16,21 @@ describe('App Module', () => {
           isGlobal: true,
           envFilePath: ['.env.example'],
         }),
+        ThrottlerModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (config: ConfigService) => ({
+            ttl: config.get('THROTTLE_TTL'),
+            limit: config.get('THROTTLE_LIMIT'),
+          }),
+        }),
         AppModule,
+      ],
+      providers: [
+        {
+          provide: APP_GUARD,
+          useClass: ThrottlerGuard,
+        },
       ],
     }).compile();
 
@@ -75,5 +91,16 @@ describe('App Module', () => {
           .expect(400);
       });
     });
+  });
+
+  /**
+   * close app when test is finished.
+   * prevent warning :
+   *
+   * A worker process has failed to exit gracefully and has been force exited.
+   * This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
+   */
+  afterAll(() => {
+    app.close();
   });
 });
