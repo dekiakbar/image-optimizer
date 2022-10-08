@@ -63,8 +63,10 @@ export class OptimizeService {
         mozjpeg: true,
       })
       .toBuffer();
-
-    image.buffer = buffer;
+      
+    if(Buffer.byteLength(buffer) < Buffer.byteLength(image.buffer)) {
+      image.buffer = buffer;
+    }
 
     return image;
   }

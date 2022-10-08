@@ -119,5 +119,8 @@ describe('OptimizeService', () => {
       90,
     );
     expect(optimizeImageResult).toMatchObject(mockOptimizeResults);
+
+    const optimizeJpegImage = await optimizeService.compressJpeg(mockImageJpeg, 90);
+    expect(optimizeJpegImage).toMatchObject(mockImageJpeg);
   });
 });
