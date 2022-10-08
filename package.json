@@ -1,8 +1,12 @@
 {
   "name": "image-optimizer",
-  "version": "0.0.3",
-  "description": "",
+  "version": "0.0.4",
+  "description": "Imageoptimizer image is a simple app for compressing any image file. It takes a single input file and compresses it to a much smaller output file.",
   "author": "Deki Akbar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dekiakbar/image-optimizer"
+  },
   "private": true,
   "license": "MIT",
   "scripts": {
