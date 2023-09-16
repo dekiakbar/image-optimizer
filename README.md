@@ -118,14 +118,12 @@ cp .env.example .env
 ```
 
 Fill the required `env` variables: 
-> note: get Imagekit key from [Imagekit.io](https://imagekit.io/)
 ```bash
 PORT=3000
 
 # Storage type for save image
 # valid :
 # - S3
-# - imagekit
 STORAGE_TYPE=S3
 
 # if use S3 as storage
@@ -134,11 +132,6 @@ S3_REGION=global
 S3_ENDPOINT=
 S3_ACCESS_KEY_ID=
 S3_SECRET_ACCESS_KEY=
-
-# if use imagekit as storage
-IMAGEKIT_PUBLIC_KEY=<YOUR_IMAGEKIT_PUBLIC_KEY>
-IMAGEKIT_PRIVATE_KEY=<YOUR_IMAGEKIT_PRIVATE_KEY>
-URL_ENDPOINT=<YOUR_IMAGEKIT_ENDPOINT>
 
 # separated by space and please provide (dot) before list the extension
 ALLOWED_FILE_TYPE=.jpeg .jpg .png
