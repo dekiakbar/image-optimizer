@@ -25,8 +25,7 @@ describe('OptimizeService', () => {
           useFactory: () => {
             return {
               upload: jest.fn(),
-              uploadS3: jest.fn(),
-              uploadImagekit: jest.fn(),
+              uploadS3: jest.fn()
             };
           },
         },

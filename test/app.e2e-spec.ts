@@ -34,8 +34,7 @@ describe('AppController (e2e)', () => {
           useFactory: () => {
             return {
               upload: jest.fn(),
-              uploadS3: jest.fn(),
-              uploadImagekit: jest.fn(),
+              uploadS3: jest.fn()
             };
           },
         },

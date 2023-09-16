@@ -1,20 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
-import ImageKit from 'imagekit';
 import { UploadResponseDto } from './dto/upload-response.dto';
-import { UploadResponse } from 'imagekit/dist/libs/interfaces';
 
 @Injectable()
 export class StorageService {
-  private uploadResonse: UploadResponseDto;
+  private uploadResponse: UploadResponseDto;
   private sizeBefore: number;
   private sizeAfter: number;
 
   constructor(
     private s3: S3,
-    private configService: ConfigService,
-    private imagekit: ImageKit,
+    private configService: ConfigService
   ) {}
 
   /**
@@ -40,23 +37,7 @@ export class StorageService {
   }
 
   /**
-   * Upload Image to imgekit.io
-   *
-   * @param image
-   * @returns
-   */
-  async uploadImagekit(image: Express.Multer.File): Promise<UploadResponse> {
-    const response = await this.imagekit.upload({
-      file: image.buffer,
-      fileName: image.originalname,
-      isPrivateFile: false,
-    });
-
-    return response;
-  }
-
-  /**
-   * Upload Image to S3 or Imagekit
+   * Upload Image to S3
    * depend on STORAGE_TYPE in env
    *
    * @param image
@@ -68,15 +49,10 @@ export class StorageService {
 
     if ((await this.getStorageType()) === 'S3') {
       const response = await this.uploadS3(image);
-      this.uploadResonse = this.convertS3Response(response);
+      this.uploadResponse = this.convertS3Response(response);
     }
 
-    if ((await this.getStorageType()) === 'imagekit') {
-      const response = await this.uploadImagekit(image);
-      this.uploadResonse = this.convertImagekitResponse(response);
-    }
-
-    return this.uploadResonse;
+    return this.uploadResponse;
   }
 
   /**
@@ -88,26 +64,6 @@ export class StorageService {
    */
   calculateSizePercentage(oldSize: number, newSize: number): number {
     return 100 - (newSize / oldSize) * 100;
-  }
-
-  /**
-   * Convert imagekit response to UploadResponseDto
-   *
-   * @param response
-   * @returns
-   */
-  convertImagekitResponse(response: UploadResponse): UploadResponseDto {
-    return {
-      imageId: response.fileId,
-      name: response.name,
-      url: response.url,
-      sizeBefore: this.sizeBefore,
-      sizeAfter: response.size,
-      optimizePercentage: this.calculateSizePercentage(
-        this.sizeBefore,
-        response.size,
-      ).toFixed(2),
-    };
   }
 
   /**
