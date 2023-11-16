@@ -40,7 +40,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.0",
-    "sharp": "^0.30.7",
+    "sharp": "^0.32.6",
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
