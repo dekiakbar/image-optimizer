@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigService } from 'aws-sdk';
+import { S3 } from '@aws-sdk/client-s3';
 import { StorageService } from '../storage/storage.service';
 import { OptimizeService } from './optimize.service';
 import * as fs from 'fs';
@@ -13,7 +13,7 @@ describe('OptimizeService', () => {
       providers: [
         OptimizeService,
         {
-          provide: ConfigService,
+          provide: S3,
           useFactory: () => {
             return {
               get: jest.fn(),
@@ -25,7 +25,7 @@ describe('OptimizeService', () => {
           useFactory: () => {
             return {
               upload: jest.fn(),
-              uploadS3: jest.fn()
+              uploadS3: jest.fn(),
             };
           },
         },
