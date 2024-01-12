@@ -1,7 +1,7 @@
 version: "3"
 services:
   node:
-    image: node:gallium-slim
+    image: node:hydrogen-slim
     user: node
     working_dir: /app
     volumes:

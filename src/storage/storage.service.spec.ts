@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StorageService } from './storage.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { S3 } from 'aws-sdk';
+import { S3 } from '@aws-sdk/client-s3';
 
 describe('StorageService', () => {
   let storageService: StorageService;
@@ -11,6 +11,7 @@ describe('StorageService', () => {
   const imageName = 'image.png';
   const sizeBefore = Buffer.byteLength(buffer);
   const fieldName = 'images';
+  const s3Endpoint = 'http://s3.example.com';
   const s3BucketName = 'anybucket';
 
   const mockImage = {
@@ -27,16 +28,23 @@ describe('StorageService', () => {
   };
 
   const mockS3Response = {
-    ETag: 'images',
-    Key: imageName,
-    Location: 'http://s3.example.com/bucket/image.jpg',
-    Bucket: s3BucketName,
+    $metadata: {
+      httpStatusCode: 200,
+      requestId: 's3/1705058504.663883/PtJX',
+      extendedRequestId: 'node-sgp-1',
+      cfId: undefined,
+      attempts: 1,
+      totalRetryDelay: 0,
+    },
+    Expiration:
+      'expiry-date="Sat, 13 Jan 2024 12:00:00 GMT", rule-id="AUTODELETE"',
+    ETag: 'd83314360b2dcb998a1af013be3dcf04',
   };
 
   const mockUploadResponse = {
-    imageId: fieldName,
+    imageId: mockS3Response.ETag,
     name: imageName,
-    url: 'http://s3.example.com/bucket/image.jpg',
+    url: `${s3Endpoint}/${s3BucketName}/${imageName}`,
     sizeBefore: sizeBefore,
     sizeAfter: 33,
     optimizePercentage: '0.00',
@@ -53,6 +61,7 @@ describe('StorageService', () => {
             return {
               upload: jest.fn().mockReturnThis(),
               promise: jest.fn(),
+              putObject: jest.fn().mockReturnThis(),
             };
           },
         },
@@ -61,15 +70,25 @@ describe('StorageService', () => {
           useValue: {
             get: jest.fn((key: string) => {
               const availableStorage = ['S3'];
+
               if (key === 'STORAGE_TYPE') {
                 return availableStorage[
                   Math.floor(Math.random() * availableStorage.length)
                 ];
               }
+
+              if (key === 'S3_BUCKET_NAME') {
+                return s3BucketName;
+              }
+
+              if (key === 'S3_ENDPOINT') {
+                return s3Endpoint;
+              }
+
               return null;
             }),
           },
-        }
+        },
       ],
     }).compile();
 
@@ -92,7 +111,10 @@ describe('StorageService', () => {
 
   describe('Upload S3', () => {
     it('should return upload response from S3 and throw no error', async () => {
-      s3Service.promise = jest.fn().mockResolvedValue(mockS3Response);
+      jest
+        .spyOn(s3Service, 'putObject')
+        .mockReturnValue(Promise.resolve(mockS3Response));
+
       const s3Response = await storageService.uploadS3(mockImage);
       expect(s3Response).toBeDefined();
       expect(s3Response).toMatchObject(mockS3Response);
@@ -106,6 +128,11 @@ describe('StorageService', () => {
       jest
         .spyOn(storageService, 'getStorageType')
         .mockReturnValue(Promise.resolve('S3'));
+
+      jest
+        .spyOn(storageService, 'uploadS3')
+        .mockReturnValue(Promise.resolve(mockS3Response));
+
       const uploadResponseFromS3 = await storageService.upload(mockImage);
       expect(uploadResponseFromS3).toBeDefined();
       expect(uploadResponseFromS3).toEqual(mockUploadResponse);
@@ -116,22 +143,8 @@ describe('StorageService', () => {
   const percentageResult = 90;
   describe('Calculate saved size', () => {
     it('should return percentage from size', async () => {
-      const percentage = await storageService.calculateSizePercentage(
-        1000,
-        100,
-      );
+      const percentage = storageService.calculateSizePercentage(1000, 100);
       expect(percentage).toEqual(percentageResult);
-    });
-  });
-
-  describe('Convert S3 response to compatible response', () => {
-    it('it should be return object and compatible with UploadResponseDto', async () => {
-      jest
-        .spyOn(storageService, 'convertS3Response')
-        .mockReturnValue(mockUploadResponse);
-      const convertedS3Response =
-        storageService.convertS3Response(mockS3Response);
-      expect(convertedS3Response).toMatchObject(mockUploadResponse);
     });
   });
 

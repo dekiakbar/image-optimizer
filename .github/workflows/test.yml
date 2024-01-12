@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install node lts (gallium)
+      - name: install node lts (hydrogen)
         uses: actions/setup-node@v3
         with:
-          node-version: lts/gallium
+          node-version: lts/hydrogen
       - name: npm install
         run: npm install
       - name: unit tests
@@ -27,10 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install node lts (gallium)
+      - name: install node lts (hydrogen)
         uses: actions/setup-node@v3
         with:
-          node-version: lts/gallium
+          node-version: lts/hydrogen
       - name: npm install
         run: npm install
       - name: end to end test

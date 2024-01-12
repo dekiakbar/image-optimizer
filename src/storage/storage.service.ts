@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { S3 } from 'aws-sdk';
+import { S3, PutObjectCommandOutput } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { UploadResponseDto } from './dto/upload-response.dto';
 
@@ -9,10 +9,7 @@ export class StorageService {
   private sizeBefore: number;
   private sizeAfter: number;
 
-  constructor(
-    private s3: S3,
-    private configService: ConfigService
-  ) {}
+  constructor(private s3: S3, private configService: ConfigService) {}
 
   /**
    * Upload image to S3
@@ -20,18 +17,17 @@ export class StorageService {
    * @param image
    * @returns
    */
-  async uploadS3(
-    image: Express.Multer.File,
-  ): Promise<S3.ManagedUpload.SendData> {
+  async uploadS3(image: Express.Multer.File): Promise<PutObjectCommandOutput> {
     const bucketName = await this.configService.get('S3_BUCKET_NAME');
-    const response = await this.s3
-      .upload({
-        Bucket: bucketName,
-        Key: image.originalname,
-        Body: image.buffer,
-        ACL: 'public-read',
-      })
-      .promise();
+
+    const upload = {
+      Bucket: bucketName,
+      Key: image.originalname,
+      Body: image.buffer,
+      ACL: 'public-read',
+    };
+
+    const response = await this.s3.putObject(upload);
 
     return response;
   }
@@ -49,7 +45,7 @@ export class StorageService {
 
     if ((await this.getStorageType()) === 'S3') {
       const response = await this.uploadS3(image);
-      this.uploadResponse = this.convertS3Response(response);
+      this.uploadResponse = await this.convertS3Response(image, response);
     }
 
     return this.uploadResponse;
@@ -72,11 +68,16 @@ export class StorageService {
    * @param response
    * @returns
    */
-  convertS3Response(response: S3.ManagedUpload.SendData): UploadResponseDto {
+  async convertS3Response(
+    image: Express.Multer.File,
+    response: any,
+  ): Promise<UploadResponseDto> {
+    const url = await this.getImageUrl(image);
+
     return {
       imageId: response.ETag.replace(/['"]+/g, ''),
-      name: response.Key,
-      url: response.Location,
+      name: image.originalname,
+      url: url,
       sizeBefore: this.sizeBefore,
       sizeAfter: this.sizeAfter,
       optimizePercentage: this.calculateSizePercentage(
@@ -84,6 +85,21 @@ export class StorageService {
         this.sizeAfter,
       ).toFixed(2),
     };
+  }
+
+  /**
+   * Build image URL based on endpoint, bucket name and filename
+   *
+   * @param image
+   * @returns
+   */
+  async getImageUrl(image: Express.Multer.File): Promise<string> {
+    const bucketName = await this.configService.get('S3_BUCKET_NAME');
+    const endpoint = await this.configService.get('S3_ENDPOINT');
+
+    return new URL(
+      `${endpoint}/${bucketName}/${image.originalname}`,
+    ).toString();
   }
 
   /**
