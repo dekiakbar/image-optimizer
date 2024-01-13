@@ -5,19 +5,6 @@ on:
     types: [opened, reopened]
 
 jobs:
-  prebuild:
-    name: Run Prebuild
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: install node lts (hydrogen)
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/hydrogen
-      - name: npm install
-        run: npm install
-      - name: run prebuild
-        run: npm run prebuild
   build:
     name: Run Build
     runs-on: ubuntu-latest

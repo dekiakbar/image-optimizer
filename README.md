@@ -2,13 +2,13 @@
 
 <p align="center">
     <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/build.yml">
-        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/build.yml/badge.svg?event=push" alt="Build">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/build.yml/badge.svg" alt="Build">
     </a>
     <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/deploy.yml">
         <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/deploy.yml/badge.svg" alt="Deploy">
     </a>
     <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/lint.yml">
-        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/lint.yml/badge.svg?event=push" alt="Lint">
+        <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/lint.yml/badge.svg" alt="Lint">
     </a>
     <a href="https://github.com/dekiakbar/image-optimizer/actions/workflows/test.yml">
         <img src="https://github.com/dekiakbar/image-optimizer/actions/workflows/test.yml/badge.svg?event=push" alt="Build">
