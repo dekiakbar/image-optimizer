@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { S3, PutObjectCommandOutput } from '@aws-sdk/client-s3';
+import {
+  S3,
+  PutObjectCommandOutput,
+  ObjectCannedACL,
+} from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { UploadResponseDto } from './dto/upload-response.dto';
 
@@ -9,7 +13,10 @@ export class StorageService {
   private sizeBefore: number;
   private sizeAfter: number;
 
-  constructor(private s3: S3, private configService: ConfigService) {}
+  constructor(
+    private s3: S3,
+    private configService: ConfigService,
+  ) {}
 
   /**
    * Upload image to S3
@@ -24,10 +31,10 @@ export class StorageService {
       Bucket: bucketName,
       Key: image.originalname,
       Body: image.buffer,
-      ACL: 'public-read',
+      ACL: ObjectCannedACL.public_read,
     };
 
-    const response = await this.s3.putObject(upload);
+    const response = this.s3.putObject(upload);
 
     return response;
   }

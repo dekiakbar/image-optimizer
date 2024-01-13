@@ -1,4 +1,4 @@
-import { Routes } from 'nest-router';
+import { Routes } from '@nestjs/core';
 import { ConfigApiModule } from './config-api/config-api.module';
 import { OptimizeModule } from './optimize/optimize.module';
 

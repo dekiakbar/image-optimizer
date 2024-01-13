@@ -19,10 +19,12 @@ describe('App Module', () => {
         ThrottlerModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
-          useFactory: (config: ConfigService) => ({
-            ttl: config.get('THROTTLE_TTL'),
-            limit: config.get('THROTTLE_LIMIT'),
-          }),
+          useFactory: (config: ConfigService) => [
+            {
+              ttl: config.get('THROTTLE_TTL'),
+              limit: config.get('THROTTLE_LIMIT'),
+            },
+          ],
         }),
         AppModule,
       ],
@@ -100,7 +102,7 @@ describe('App Module', () => {
    * A worker process has failed to exit gracefully and has been force exited.
    * This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks.
    */
-  afterAll(() => {
-    app.close();
+  afterAll(async () => {
+    await app.close();
   });
 });

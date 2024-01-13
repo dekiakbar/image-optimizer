@@ -21,10 +21,12 @@ describe('AppController (e2e)', () => {
         ThrottlerModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
-          useFactory: (config: ConfigService) => ({
-            ttl: config.get('THROTTLE_TTL'),
-            limit: config.get('THROTTLE_LIMIT'),
-          }),
+          useFactory: (config: ConfigService) => [
+            {
+              ttl: config.get('THROTTLE_TTL'),
+              limit: config.get('THROTTLE_LIMIT'),
+            },
+          ],
         }),
         AppModule,
       ],
@@ -117,7 +119,7 @@ describe('AppController (e2e)', () => {
    * This usually means that there are asynchronous operations that weren't stopped in your tests.
    * Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
    */
-  afterAll(() => {
-    app.close();
+  afterAll(async () => {
+    await app.close();
   });
 });
