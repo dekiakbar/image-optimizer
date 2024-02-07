@@ -7,5 +7,5 @@ services:
     volumes:
       - '.:/app'
     ports:
-      - "${PORT}:${PORT}"
+      - "127.0.0.1:${PORT}:${PORT}"
     command: bash -c "npm run start:dev"
