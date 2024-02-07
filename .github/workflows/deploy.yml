@@ -2,10 +2,10 @@ name: Deploy
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Test"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Test"]
+  #   types:
+  #     - completed
   pull_request:
     types:
       - closed
@@ -19,3 +19,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Deploy to vps
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          command_timeout: 30m
+          script: |
+            cd image-optimizer
+            git pull origin master
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --build
