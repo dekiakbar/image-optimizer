@@ -30,4 +30,4 @@ jobs:
           script: |
             cd image-optimizer
             git pull origin master
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --build
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --build --force-recreate
